@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "123"
+      MYSQL_DATABASE: "vacancy_db"
+      MYSQL_USER: "myuser"
+      MYSQL_PASSWORD: "123"
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  manticore:
+    image: manticoresearch/manticore:latest
+    container_name: manticore
+    ports:
+      - "9306:9306"  
+      - "9312:9312"  
+    volumes:
+      - ./manticore.conf:/etc/manticoresearch/manticore.conf
+      - manticore_data:/var/lib/manticore
+
+volumes:
+  manticore_data:
